@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Endpoint to get the list of directories/files (as an example)
-app.get('/api/files', (req, res) => {
+app.get('/', (req, res) => {
+    res.send('Welcome to Chemutais File mgt system :x');
     // You'd add your logic here to list files
     res.json([{name: 'File1.txt'}, {name: 'File2.txt'}]);
 });
