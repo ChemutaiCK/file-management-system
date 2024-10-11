@@ -1,6 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+
+const FileList = ({ files }) => {
+    return (
+        <div className="container mt-4">
+            <h2 className="text-center">Files and Directories</h2>
+            <table className="table table-bordered">
+                <thead className="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Date Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {files.map((file) => (
+                        <tr key={file.id}>
+                            <td>{file.name}</td>
+                            <td>{file.size}</td>
+                            <td>{file.dateModified}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+export default FileList;
+
 function FileList() {
   const [files, setFiles] = useState([]);
 

@@ -3,8 +3,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import FileList from './components/FileList';
 import FileDetails from './components/FileDetails';
 import UploadFile from './components/UploadFile';
+import Navbar from './components/Navbar';
+
 
 function App() {
+    return (
+        <div>
+            <Navbar/>
+
+        </div>
+    );
+
+}
+
+
+ {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 

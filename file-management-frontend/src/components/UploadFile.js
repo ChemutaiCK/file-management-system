@@ -1,28 +1,36 @@
-// src/components/UploadFile.js
 import React, { useState } from 'react';
 
-const UploadFile = ({ onUpload }) => {
-  const [file, setFile] = useState(null);
+const UploadFile = () => {
+    const [file, setFile] = useState(null);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
 
-  const handleUpload = () => {
-    if (file) {
-      onUpload(file);
-      setFile(null); // Clear the file input after upload
-    }
-  };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Handle file upload logic
+    };
 
-  return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <button className="btn btn-success" onClick={handleUpload}>
-        Upload
-      </button>
-    </div>
-  );
+    return (
+        <div className="container mt-4">
+            <h3>Upload File</h3>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="fileUpload">Choose file</label>
+                    <input
+                        type="file"
+                        className="form-control-file"
+                        id="fileUpload"
+                        onChange={handleFileChange}
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                    Upload
+                </button>
+            </form>
+        </div>
+    );
 };
 
 export default UploadFile;
