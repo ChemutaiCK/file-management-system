@@ -1,23 +1,52 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+
 const app = express();
-const port = process.env.PORT || 3000;
+const upload = multer({ dest: 'uploads/' });
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// Serve static files from the 'public' folder (your frontend)
 app.use(express.static('public'));
 
-// Endpoint to get the list of directories/files (as an example)
 app.get('/', (req, res) => {
-    res.send('Welcome to Chemutais File mgt system :x');
-    // You'd add your logic here to list files
-    res.json([{name: 'File1.txt'}, {name: 'File2.txt'}]);
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+// Route to list directories and files
+app.get('/files', (req, res) => {
+  fs.readdir('./uploads', (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ files });
+  });
+});
+
+// Route to upload a file
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.json({ message: 'File uploaded successfully!' });
+});
+
+// Route to create a directory
+app.post('/create-directory', (req, res) => {
+  const dirPath = './uploads/new-directory';
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath);
+    res.json({ message: 'Directory created successfully!' });
+  } else {
+    res.status(400).json({ error: 'Directory already exists' });
+  }
+});
+
+// Route to delete a file
+app.delete('/delete-file', (req, res) => {
+  const filePath = `./uploads/${req.body.filename}`;
+  fs.unlink(filePath, (err) => {
+    if (err) return res.status(400).json({ error: 'File not found' });
+    res.json({ message: 'File deleted successfully!' });
+  });
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
