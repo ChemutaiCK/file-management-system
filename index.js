@@ -1,21 +1,22 @@
-// Import required packages
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const app = express();
+const port = process.env.PORT || 3000;
 
-const app = express(); // Create an Express application
-const PORT = process.env.PORT || 3000; // Set port to 3000 or use environment variable
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-// Middleware setup
-app.use(cors()); // Enable CORS for all routes
-app.use(bodyParser.json()); // Parse JSON request bodies
+// Serve static files from the 'public' folder (your frontend)
+app.use(express.static('public'));
 
-// Sample route
-app.get('/', (req, res) => {
-    res.send('Welcome to the File Management System!'); // Respond with a welcome message
+// Endpoint to get the list of directories/files (as an example)
+app.get('/api/files', (req, res) => {
+    // You'd add your logic here to list files
+    res.json([{name: 'File1.txt'}, {name: 'File2.txt'}]);
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`); // Log server start message
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 });
